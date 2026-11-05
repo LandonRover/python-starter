@@ -1,0 +1,66 @@
+[project]
+name = "app"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = ["lib"]
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+lib = { workspace = true }
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.7.0",
+    "pyright>=1.1.414",
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.3",
+]
+
+[tool.ruff]
+src = ["src", "packages/*/src"]
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "N",
+    "UP",
+    "B",
+    "A",
+    "C4",
+    "DTZ",
+    "T20",
+    "PT",
+    "RET",
+    "SIM",
+    "PTH",
+    "RUF",
+]
+
+[tool.pyright]
+include = ["src", "tests", "packages"]
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest]
+testpaths = ["tests", "packages"]
+addopts = ["--import-mode=importlib", "--cov"]
+strict = true
+
+[tool.coverage.run]
+branch = true
+source = ["src", "packages"]
+omit = ["*/tests/*"]
+
+[tool.coverage.report]
+show_missing = true
